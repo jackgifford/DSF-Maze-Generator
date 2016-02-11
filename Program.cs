@@ -14,8 +14,11 @@ namespace DSF
             Console.WriteLine("How many rows, and columns");
             //generateMaze();
             //Implement this
-            generateRandomDirections();
+            int[,] mazeArray;
 
+            mazeArray = generateMaze();
+            generateRandomDirections();
+            
         }
 
 
@@ -95,7 +98,7 @@ namespace DSF
                         break;
 
                     case 1: //Right
-
+                        if(y + 2 >=)
                         break;
 
                     case 2: //Down
