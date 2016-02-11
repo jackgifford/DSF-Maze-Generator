@@ -87,7 +87,7 @@ namespace DSF
                         if (x - 2 <= 0)
                             continue;
                         
-                        if (maze[x-2,y] != 1)
+                        if (maze[x-2,y] != 1) //If node has not been previously "discovered"
                         {
                             maze[x - 2, y] = 1;
                             maze[x - 1, y] = 1;
