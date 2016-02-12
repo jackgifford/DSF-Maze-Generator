@@ -1,31 +1,27 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Collections.Generic;
 
-namespace DSF
+namespace DFS
 {
     class Program
     {
-        static void Main(string[] args)
-        {
-            Console.WriteLine("How many rows, and columns");
-            //generateMaze();
-            //Implement this
-            int[,] mazeArray;
 
+         static void Main(string[] args)
+        {
+            Console.WriteLine("DFS Maze Generator"); 
+            int[,] mazeArray;
             mazeArray = generateMaze();
-            generateRandomDirections();
-            
+            printMaze(mazeArray);
         }
 
 
         private static int[,] generateMaze()
         {
-            int height = 24;
-            int length = 24;
+            int height = 13;
+            int length = 13;
             int[,] maze = new int[height,length];
 
             //intialise array with open fields
@@ -39,13 +35,14 @@ namespace DSF
 
             Random rnd = new Random();
             //Generate random starting x
-            int startingX = rnd.Next(24);
+            int startingX = rnd.Next(length);
 
             //Generate random starting y
-            int startingY = rnd.Next(24);
+            int startingY = rnd.Next(height);
 
-            recursion(startingX, startingY);
+            maze = recursion(startingX, startingY, maze, length, height);
 
+            
             return maze;
 
         }
@@ -68,14 +65,12 @@ namespace DSF
                 randoms[a] = randoms[i - 1];
                 randoms[i - 1] = tmp;
             }
-
-
             
             return randoms.ToArray();
             
         }
         
-        private static void recursion(int x, int y, int[,] maze)
+        private static int[,] recursion(int x, int y, int[,] maze, int width, int height)
         {
             int[] randDirections = generateRandomDirections();
 
@@ -85,35 +80,86 @@ namespace DSF
                 {
                     case 0: //Up
                         if (x - 2 <= 0)
+                        {
                             continue;
+                        }
                         
                         if (maze[x-2,y] != 1) //If node has not been previously "discovered"
                         {
                             maze[x - 2, y] = 1;
                             maze[x - 1, y] = 1;
-                            
-                            
+
+                            recursion(x - 2, y, maze, width, height);
                         }
-                        
                         break;
 
                     case 1: //Right
-                        if(y + 2 >=)
+                        if (y + 2 >= width - 1)//Out by one error
+                        {
+                            continue;
+                        }
+
+                        if (maze[x,y+2] != 1)
+                        {
+                            maze[x, y + 2] = 1;
+                            maze[x, y + 1] = 1;
+
+                            recursion(x, y + 2, maze, width, height);
+                        }
                         break;
 
                     case 2: //Down
+                        if (x + 2 >= height - 1)
+                        {
+                            continue;
+                        }
+
+                        if (maze[x+2,y] != 1)
+                        {
+                            maze[x + 2, y] = 1;
+                            maze[x + 1, y] = 1;
+
+                            recursion(x + 2, y, maze, width, height);
+                        }
                         break;
 
                     case 3: //Left
+                        if (y - 2 <= 0)
+                        {
+                            continue;
+                        }
+
+                        if (maze[x,y-2] != 1)
+                        {
+                            maze[x, y - 2] = 1;
+                            maze[x, y - 1] = 1;
+
+                            recursion(x, y - 2, maze, width, height);
+                        }
                         break;
 
                 }
             }
 
+            return maze;
         }
 
-        //Still to implement:
-        //Print to console 
-        //Finish recursion method
+        static void printMaze(int[,] maze)
+        {
+            int rowCount = maze.GetLength(0);
+            int colCount = maze.GetLength(1);
+
+            for (int i = 0; i < rowCount; i++)
+            {
+                for (int j = 0; j < colCount; j++)
+                {
+                    Console.Write(String.Format("{0}\t", maze[i, j]));   
+                }
+                Console.WriteLine();
+                
+            }
+            Console.Read();
+        }
+
     }
 }
